@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>HTML5</title>
+</head>
+<body>
+<div class="player">
+	<video class="video_source"   id="media"><source src="monetochka.mp4" type="video/mp4"></video>
+	
+	<div class="controls">
+		<a class="play" href="#">Play</a>
+		<div class="time">
+		0:00
+	</div>
+	<div class="timeline">
+		<div class="progress">
+			
+		</div>
+	</div>
+	</div>
+	
+</div>
+<div id="map" style="width: 600px; height: 400px"></div>
+	<script src="jquery.min.js"></script>
+	<link rel="stylesheet" href="video.css">
+	<script>
+////		Создаём объект
+//		var object={
+//			prop:'vall',
+//			method:function() {
+//			return this.prop
+//		}			
+//		};
+//		console.log(object.prop);
+//		console.log(object.method());
+		$(document).ready(function(){
+			var  video=document.getElementById("media");
+			console.log(video);
+			
+			
+			
+			$('.play').on('click',function(e){
+				$this=$(this);
+				e.preventDefault;
+//				video.play();
+//				$(this).text("||||");
+				video.paused?video.play() && $this.text('||'):video.pause() && $this.text("Play");
+			});
+			
+			$(video).on("timeupdate",function(){
+				var 
+				currenttime=video.currentTime,
+					duration=video.duration,
+					elapsed=duration-currenttime;
+				  setTime(elapsed);
+				progress=Math.floor(currenttime/duration*100)+"%";
+			console.log(progress);
+				$('.progress').css('width',progress);
+				$('.timeline').on('click',function(e){
+					var poz=e.pageX-$(this).offset().left;
+					percents=poz/$(this).width()*100;
+					console.log(percents);
+					var trackpoz=video.duration/100*percents;
+                    video.currentTime=trackpoz;
+				});
+						});
+			$(video).on('canplay',function(){
+				var time=video.duration;
+				setTime(time);
+			});
+			function setTime(time){
+				minutes=Math.floor(time/60),
+					second=Math.floor(time-(minutes*60)),
+					timestring=minutes+":"+second;
+				$('div.time').text(timestring);
+			}
+			
+			
+		});
+	</script>
+	
+	
+	
+</body>
+</html>
